@@ -1,0 +1,15 @@
+#This playbook deploys Elk to the Elk VM and then deploys filebeat and metric beat to the web VM's
+---
+  - name: elk-install
+    hosts: elk
+    become: true
+    roles:
+    - install-elk
+
+  - name: Beat-installs
+    hosts: webservers
+    become: true
+    roles:
+    - install-filebeat
+    - install-metricbeat
+
