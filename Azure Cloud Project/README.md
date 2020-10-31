@@ -91,30 +91,30 @@ SSH into the control node and follow the steps below:
 - Create the following directory structure in /etc/ansible/
 - Copy all the yaml files listed below into their respective directories
 - This can be done quickly and accurately by downloading and running the script [roles_setup] in the script folder of this repository.
-![roles_setup](scripts/roles_setup)
+
 
 - To download this script, run the following command within your Ansible container:
 curl -LJO https://raw.githubusercontent.com/Marsh-A/Cyber-Security-Bootcamp-Portfolio/master/Azure%20Cloud%20Project/Scripts/roles_setup
 
 File structure for /etc/ansible/
-├── ansible.cfg
-├── hosts
-├── main.yml
-└── roles
-    ├── install-elk
-    │   ├── files
-    │   └── tasks
-    │       └── install-elk.yml
-    ├── install-filebeat
-    │   ├── files
-    │   │   └── filebeat-config.yml
-    │   └── tasks
-    │       └── install-filebeat.yml
-    └── install-metricbeat
-        ├── files
-        │   └── metricbeat-config.yml
-        └── tasks
-            └── install-metricbeat.yml
++-- ansible.cfg
++-- hosts
++-- main.yml
++-- _roles
+|   +-- _install-elk
+    |   +-- _files
+    |   +-- _tasks
+        |   +-- install-elk.yml
+    +-- _install-filebeat
+    |   +-- _files
+        |   +-- filebeat-config.yml
+    |   +-- _tasks
+        |   +-- install-filebeat.yml
+    +-- _install-metricbeat
+    |   +-- _files
+        |   +-- metricbeat-config.yml
+    |   +-- _tasks
+        |   +-- install-metricbeat.yml
 
 
 - Update the ansible.cfg file:
