@@ -44,30 +44,28 @@ Machines within the network can only be accessed by Jump-Box-Provisioner.
 
 A summary of the access policies in place can be found in the table below:
 
-_Note: Use the [Markdown Table Generator](http://www.tablesgenerator.com/markdown_tables) to add/remove values from the table_.
-_TODO
-| Name     | Publicly Accessible | Allowed IP Addresses |
-|----------|---------------------|----------------------|
-| Jump Box | Yes/No              | 10.0.0.1 10.0.0.2    |
-|          |                     |                      |
-|          |                     |                      |
+| Name                 | Publicly Accessible | Allowed IP Addresses           |
+|----------------------|---------------------|--------------------------------|
+| Jump-Box-Provisioner | Yes                 | Set personal public IP address |
+| Web-1                | No                  | 10.0.0.4                       |
+| Web-2                | No                  | 10.0.0.4                       |
+| Web-3                | No                  | 10.0.0.4                       |
+| ELK-VM               | No                  | 10.0.0.4                       |
 
 ### Elk Configuration
 
-Ansible was used to automate configuration of the ELK machine. No configuration was performed manually, which is advantageous because...
-- _TODO: What is the main advantage of automating configuration with Ansible?_
+Ansible was used to automate configuration of the ELK machine. No configuration was performed manually, which is advantageous because it can be setup quickly and accurately multiple times.
 
 The playbook implements the following tasks:
-- _TODO: In 3-5 bullets, explain the steps of the ELK installation play. E.g., install Docker; download image; etc._
-- ...
-- ...
+- Installs docker.io
+- Installs python3-pip
+- Increases the virtual memory limit on the ELK VM
+- Installs the ELK Docker container and maps the ports
+- Enables the docker service
 
 The following screenshot displays the result of running `docker ps` after successfully configuring the ELK instance.
 
-**Note**: The following image link needs to be updated. Replace `docker_ps_output.png` with the name of your screenshot image file.  
-
-
-![TODO: Update the path with the name of your screenshot of docker ps output](Images/docker_ps_output.png)
+![docker ps](Images/docker_ps_output.png)
 
 ### Target Machines & Beats
 This ELK server is configured to monitor the following machines:
@@ -81,19 +79,64 @@ We have installed the following Beats on these machines:
 - Metricbeat
 
 These Beats allow us to collect the following information from each machine:
-- _TODO: In 1-2 sentences, explain what kind of data each beat collects, and provide 1 example of what you expect to see. E.g., `Winlogbeat` collects Windows logs, which we use to track user logon events, etc._
+
+- Filebeat collects and forwards log files, such as SSH logins and sudo commands, for Linux/Unix based servers, which can be used to monitor for suspicious/unauthorised behaviour.
+- Metricbeat collects system metrics such as cpu and memory usage, which can be used to monitor the performance and health of your servers.
 
 ### Using the Playbook
 In order to use the playbook, you will need to have an Ansible control node already configured. Assuming you have such a control node provisioned: 
 
 SSH into the control node and follow the steps below:
-- Copy the _____ file to _____.
-- Update the _____ file to include...
-- Run the playbook, and navigate to ____ to check that the installation worked as expected.
 
-_TODO: Answer the following questions to fill in the blanks:_
-- _Which file is the playbook? Where do you copy it?_
-- _Which file do you update to make Ansible run the playbook on a specific machine? How do I specify which machine to install the ELK server on versus which to install Filebeat on?_
-- _Which URL do you navigate to in order to check that the ELK server is running?
+- Create the following directory structure in /etc/ansible/
+- Copy all the yaml files listed below into their respective directories
+- This can be done quickly and accurately by downloading and running the script [roles_setup] in the script folder of this repository.
+![roles_setup](scripts/roles_setup)
 
-_As a **Bonus**, provide the specific commands the user will need to run to download the playbook, update the files, etc._
+- To download this script, run the following command within your Ansible container:
+curl -LJO https://raw.githubusercontent.com/Marsh-A/Cyber-Security-Bootcamp-Portfolio/master/Azure%20Cloud%20Project/Scripts/roles_setup
+
+File structure for /etc/ansible/
+├── ansible.cfg
+├── hosts
+├── main.yml
+└── roles
+    ├── install-elk
+    │   ├── files
+    │   └── tasks
+    │       └── install-elk.yml
+    ├── install-filebeat
+    │   ├── files
+    │   │   └── filebeat-config.yml
+    │   └── tasks
+    │       └── install-filebeat.yml
+    └── install-metricbeat
+        ├── files
+        │   └── metricbeat-config.yml
+        └── tasks
+            └── install-metricbeat.yml
+
+
+- Update the ansible.cfg file:
+       Change the remote user on line 107 to the user setup on the VM's
+       remote_user = <username_on_VM>
+
+- Update the hosts file to include all your VM's:
+      [elk]
+      <ELK VM IP> ansible_python_interpreter=/usr/bin/python3
+      [webservers]
+      <Web VM 1 IP> ansible_python_interpreter=/usr/bin/python3
+      <Web VM 2 IP> ansible_python_interpreter=/usr/bin/python3
+      <Web VM 3 IP> ansible_python_interpreter=/usr/bin/python3  
+
+-Update the filebeat-config.yml:
+    - Change IP address on line 1106 to the IP address of the ELK VM
+    - Change IP address on line 1806 to the IP address of the ELK VM
+
+-Update the metricbeat-config.yml:
+    - Change IP address on line 62 to the IP address of the ELK VM
+    - Change IP address on line 95 to the IP address of the ELK VM
+
+- Run the main.yml playbook, and navigate to <ELK_VM_PUBLIC_IP>:6051 to check that the installation worked as expected.
+    ansible-playbook main.yml
+
