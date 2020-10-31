@@ -4,7 +4,7 @@ SRCFILE="https://raw.githubusercontent.com/Marsh-A/Cyber-Security-Bootcamp-Portf
 DEST="/etc/ansible/roles"
 
 #create the file structure in /etc/ansible/roles
-mkdir -p $DEST/roles/{'install-elk'/{files,tasks},'install-filebeat'/{files,tasks},'install-metricbeat'/{files,tasks}}
+mkdir -p $DEST/{'install-elk'/{files,tasks},'install-filebeat'/{files,tasks},'install-metricbeat'/{files,tasks}}
 
 #Download the main yaml file
 curl -LJO $SRCFILE/main.yml
