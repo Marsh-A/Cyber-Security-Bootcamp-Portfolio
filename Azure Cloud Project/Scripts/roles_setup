@@ -8,7 +8,7 @@ mkdir -p $DEST/{'install-elk'/{files,tasks},'install-filebeat'/{files,tasks},'in
 
 #Download the main yaml file
 curl -LJO $SRCFILE/main.yml
-mv ./main.yml $DEST/
+mv ./main.yml /etc/ansible
 
 #Download Elk files
 curl -LJO $SRCFILE/install-elk.yml
