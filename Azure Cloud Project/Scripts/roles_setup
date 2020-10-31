@@ -3,27 +3,26 @@
 SRCFILE="https://raw.githubusercontent.com/Marsh-A/Cyber-Security-Bootcamp-Portfolio/master/Azure%20Cloud%20Project/Ansible"
 DEST="/etc/ansible/roles"
 
-
 #create the file structure in /etc/ansible/roles
 mkdir -p $DEST/roles/{'install-elk'/{files,tasks},'install-filebeat'/{files,tasks},'install-metricbeat'/{files,tasks}}
 
 #Download the main yaml file
-curl $SRCFILE/main.yml
+curl -LJO $SRCFILE/main.yml
 mv ./main.yml $DEST/
 
 #Download Elk files
-curl $SRCFILE/install-elk.yml
+curl -LJO $SRCFILE/install-elk.yml
 mv ./install-elk.yml $DEST/install-elk/tasks/
 
 #Download Filebeat files
-curl $SRCFILE/install-filebeat.yml
-wget $SRCFILE/filebeat-config.yml
+curl -LJO $SRCFILE/install-filebeat.yml
+curl -LJO $SRCFILE/filebeat-config.yml
 mv ./install-filebeat.yml -P $DEST/install-filebeat/tasks/
 mv ./filebeat-config.yml -P $DEST/install-filebeat/files/
 
 #Download Metricbeat files
-wget $SRCFILE/install-metricbeat.yml
-wget $SRCFILE/metricbeat-config.yml
+curl -LJO $SRCFILE/install-metricbeat.yml
+curl -LJO $SRCFILE/metricbeat-config.yml
 mv ./install-metricbeat.yml -P $DEST/install-metricbeat/tasks/
 mv ./metricbeat-config.yml -P $DEST/install-metricbeat/files/
 
